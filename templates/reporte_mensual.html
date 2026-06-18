@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Reporte Mensual - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-chart-line"></i> Reporte Mensual
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for item in reporte %}
+                <div class="col-md-6 mb-3">
+                    <div class="card {% if loop.index == 2 %}bg-info text-white{% elif loop.index == 5 %}bg-warning{% else %}bg-light{% endif %}">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-{% if loop.index == 1 %}calendar{% elif loop.index == 2 %}dollar-sign{% elif loop.index == 3 %}receipt{% elif loop.index == 4 %}users{% elif loop.index == 5 %}trophy{% else %}chart-line{% endif %}"></i>
+                                {{ item[0] }}
+                            </h5>
+                            <h3>{{ item[1] }}</h3>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-3 text-center">
+                <a href="{{ url_for('reporte.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+                <button onclick="window.print()" class="btn btn-primary">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

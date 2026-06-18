@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Cancelar Reserva - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-ban"></i> Cancelar Reserva
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if reserva %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-calendar-times"></i>
+                        <strong>Reserva a cancelar:</strong><br>
+                        <strong>Miembro:</strong> {{ reserva[1] }}<br>
+                        <strong>Clase:</strong> {{ reserva[2] }}<br>
+                        <strong>Fecha de clase:</strong> {{ reserva[3] }}
+                    </div>
+                    {% endif %}
+
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Política de cancelación:</strong>
+                        <ul class="mt-2 mb-0">
+                            <li>Se requiere al menos 24 horas de anticipación</li>
+                            <li>Cancelaciones con menos de 3 días de anticipación quedan registradas en auditoría</li>
+                            <li>Cancelaciones tardías pueden afectar la disponibilidad futura</li>
+                        </ul>
+                    </div>
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="motivo" class="form-label">Motivo de cancelación</label>
+                            <textarea class="form-control" id="motivo" name="motivo" rows="3"
+                                placeholder="Opcional: Indique el motivo de la cancelación..."></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ url_for('reserva.listar') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de cancelar esta reserva? Esta acción no se puede deshacer.')">
+                                <i class="fas fa-ban"></i> Confirmar Cancelación
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

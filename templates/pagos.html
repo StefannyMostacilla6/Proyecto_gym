@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Pagos - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-dollar-sign text-success"></i>
+            Historial de Pagos
+        </h2>
+        <a href="{{ url_for('pago.nuevo') }}" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Nuevo Pago
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <i class="fas fa-table"></i> Listado de Pagos
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr class="text-center">
+                            <th>ID</th>
+                            <th>Miembro</th>
+                            <th>Membresía</th>
+                            <th>Monto</th>
+                            <th>Fecha Pago</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Método</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pago in pagos %}
+                        <tr class="text-center">
+                            <td>{{ pago[0] }}</td>
+                            <td>{{ pago[1] }}</td>
+                            <td>{{ pago[2] }}</td>
+                            <td>${{ "%.2f"|format(pago[3]) }}</td>
+                            <td>{{ pago[4] }}</td>
+                            <td>{{ pago[5] }}</td>
+                            <td>
+                                {% if pago[6] == 'efectivo' %}
+                                    <span class="badge bg-success">💵 Efectivo</span>
+                                {% elif pago[6] == 'tarjeta' %}
+                                    <span class="badge bg-info">💳 Tarjeta</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">🏦 Transferencia</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if pago[7] == 'pagado' %}
+                                    <span class="badge bg-success">Pagado</span>
+                                {% elif pago[7] == 'anulado' %}
+                                    <span class="badge bg-danger">Anulado</span>
+                                {% else %}
+                                    <span class="badge bg-warning">{{ pago[7] }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('pago.anular', id=pago[0]) }}"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('¿Anular este pago?')"
+                                       title="Anular Pago">
+                                        <i class="fas fa-ban"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-4">
+                                <i class="fas fa-info-circle fa-2x mb-2 d-block"></i>
+                                No hay pagos registrados
+                                <br>
+                                <a href="{{ url_for('pago.nuevo') }}" class="btn btn-sm btn-primary mt-2">
+                                    <i class="fas fa-plus"></i> Registrar primer pago
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

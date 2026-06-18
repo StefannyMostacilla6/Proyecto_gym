@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Reservas - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Encabezado y botón nuevo -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-calendar-check text-primary"></i>
+            Gestión de Reservas
+        </h2>
+        <a href="{{ url_for('reserva.nuevo') }}" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Nueva Reserva
+        </a>
+    </div>
+
+    <!-- Tarjeta con la tabla -->
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <i class="fas fa-table"></i> Listado de Reservas
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr class="text-center">
+                            <th width="5%">ID</th>
+                            <th width="15%">Miembro</th>
+                            <th width="15%">Clase</th>
+                            <th width="10%">Fecha Clase</th>
+                            <th width="8%">Hora</th>
+                            <th width="10%">Estado</th>
+                            <th width="8%">Fecha Reserva</th>
+                            <th width="20%">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reserva in reservas %}
+                        <tr class="text-center">
+                            <td>{{ reserva[0] }}</td>
+                            <td class="text-start">{{ reserva[1] }}</td>
+                            <td class="text-start">{{ reserva[2] }}</td>
+                            <td>{{ reserva[3] }}</td>
+                            <td>{{ reserva[6] }}</td>
+                            <td>
+                                <span class="badge {% if reserva[4] == 'confirmada' %}bg-success{% elif reserva[4] == 'cancelada' %}bg-danger{% elif reserva[4] == 'lista_espera' %}bg-warning{% elif reserva[4] == 'completada' %}bg-info{% else %}bg-secondary{% endif %}">
+                                    {% if reserva[4] == 'confirmada' %}
+                                        <i class="fas fa-check-circle"></i> Confirmada
+                                    {% elif reserva[4] == 'cancelada' %}
+                                        <i class="fas fa-ban"></i> Cancelada
+                                    {% elif reserva[4] == 'lista_espera' %}
+                                        <i class="fas fa-clock"></i> Lista de Espera
+                                    {% elif reserva[4] == 'completada' %}
+                                        <i class="fas fa-check-double"></i> Completada
+                                    {% else %}
+                                        {{ reserva[4] }}
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>{{ reserva[5] }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <!-- Botón Marcar Asistencia (solo para reservas confirmadas) -->
+                                    {% if reserva[4] == 'confirmada' %}
+                                    <a href="{{ url_for('asistencia.registrar_con_procedimiento', reserva_id=reserva[0]) }}"
+                                       class="btn btn-success btn-sm"
+                                       title="Marcar Asistencia"
+                                       onclick="return confirm('¿Registrar asistencia para esta reserva?')">
+                                        <i class="fas fa-check-circle"></i> Asistencia
+                                    </a>
+                                    {% endif %}
+
+                                    <!-- Botón Cancelar con Penalización (solo para reservas no canceladas ni completadas) -->
+                                    {% if reserva[4] not in ['cancelada', 'completada'] %}
+                                    <a href="{{ url_for('reserva.cancelar_con_penalizacion', id=reserva[0]) }}"
+                                       class="btn btn-danger btn-sm"
+                                       title="Cancelar Reserva"
+                                       onclick="return confirm('¿Cancelar esta reserva con penalización?')">
+                                        <i class="fas fa-ban"></i> Cancelar
+                                    </a>
+                                    {% endif %}
+
+                                    <!-- Botón Cancelar simple (alternativa) -->
+                                    {% if reserva[4] not in ['cancelada', 'completada'] %}
+                                    <a href="{{ url_for('reserva.cancelar', id=reserva[0]) }}"
+                                       class="btn btn-warning btn-sm"
+                                       title="Cancelar Simple"
+                                       onclick="return confirm('¿Cancelar esta reserva sin penalización?')">
+                                        <i class="fas fa-times"></i> Simple
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                <i class="fas fa-calendar-times fa-2x mb-2 d-block"></i>
+                                No hay reservas registradas
+                                <br>
+                                <a href="{{ url_for('reserva.nuevo') }}" class="btn btn-sm btn-primary mt-2">
+                                    <i class="fas fa-plus"></i> Crear primera reserva
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <i class="fas fa-info-circle"></i> Total de reservas: {{ reservas|length }}
+        </div>
+    </div>
+</div>
+{% endblock %}

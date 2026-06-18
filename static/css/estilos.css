@@ -1,0 +1,126 @@
+body{
+    background-color:#f4f6f9;
+}
+
+h1,h2,h3{
+    color:#0d6efd;
+}
+
+.card{
+    border-radius:15px;
+}
+
+.table{
+    background:white;
+}
+
+.navbar{
+    margin-bottom:20px;
+}
+
+.btn{
+    border-radius:10px;
+}
+
+/* ========================================
+   ESTILOS PARA EL INICIO (DASHBOARD)
+   ======================================== */
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    color: white;
+}
+
+/* Tarjetas de estadísticas */
+.stat-card {
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+/* Acciones rápidas */
+.quick-action-btn {
+    padding: 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* Texto de bienvenida */
+.welcome-text {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Badge de rol */
+.role-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+.footer {
+    background: #2c3e50;
+    color: white;
+    padding: 20px 0;
+    margin-top: 50px;
+    border-radius: 15px 15px 0 0;
+}
+
+/* Tarjetas de módulos */
+.module-card {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.module-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-section, .stat-card, .quick-action-btn, .module-card {
+    animation: fadeInUp 0.5s ease-out;
+}

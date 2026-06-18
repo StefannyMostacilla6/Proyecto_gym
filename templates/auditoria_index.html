@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Auditoría - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="alert alert-danger">
+        <i class="fas fa-shield-alt"></i>
+        <strong>Panel de Auditoría - Solo Administradores</strong>
+        <br>Aquí puedes ver todas las tablas del sistema incluyendo campos de auditoría.
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-database"></i> Tablas del Sistema
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Tablas principales -->
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 border-primary">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="fas fa-users"></i> Gestión de Usuarios
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="{{ url_for('auditoria.auditoria_miembros') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-user-friends"></i> Miembros
+                                            <span class="badge bg-primary float-end">Ver todos los campos</span>
+                                        </a>
+                                        <a href="{{ url_for('auditoria.auditoria_usuarios') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-user-shield"></i> Usuarios
+                                            <span class="badge bg-primary float-end">Ver todos los campos</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 border-success">
+                                <div class="card-header bg-success text-white">
+                                    <i class="fas fa-credit-card"></i> Finanzas
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="{{ url_for('auditoria.auditoria_membresias') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-tags"></i> Membresías
+                                            <span class="badge bg-success float-end">Ver todos los campos</span>
+                                        </a>
+                                        <a href="{{ url_for('auditoria.auditoria_pagos') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-dollar-sign"></i> Pagos
+                                            <span class="badge bg-success float-end">Ver todos los campos</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <i class="fas fa-chalkboard-user"></i> Clases y Entrenadores
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="{{ url_for('auditoria.auditoria_clases') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-chalkboard"></i> Clases
+                                            <span class="badge bg-warning float-end">Ver todos los campos</span>
+                                        </a>
+                                        <a href="{{ url_for('auditoria.auditoria_entrenadores') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-person-walking-arrow-right"></i> Entrenadores
+                                            <span class="badge bg-warning float-end">Ver todos los campos</span>
+                                        </a>
+                                        <a href="{{ url_for('auditoria.auditoria_horarios') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-clock"></i> Horarios
+                                            <span class="badge bg-warning float-end">Ver todos los campos</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 border-info">
+                                <div class="card-header bg-info text-white">
+                                    <i class="fas fa-calendar-check"></i> Reservas y Asistencias
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="{{ url_for('auditoria.auditoria_reservas') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-calendar-alt"></i> Reservas
+                                            <span class="badge bg-info float-end">Ver todos los campos</span>
+                                        </a>
+                                        <a href="{{ url_for('auditoria.auditoria_asistencias') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-check-circle"></i> Asistencias
+                                            <span class="badge bg-info float-end">Ver todos los campos</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="card h-100 border-danger">
+                                <div class="card-header bg-danger text-white">
+                                    <i class="fas fa-history"></i> Registro de Auditoría
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="{{ url_for('auditoria.auditoria_cambios') }}" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-alt"></i> Cambios Registrados (Trigger)
+                                            <span class="badge bg-danger float-end">Ver todos los cambios</span>
+                                        </a>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block">
+                                        <i class="fas fa-info-circle"></i> Esta tabla registra automáticamente cuando se elimina un miembro
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

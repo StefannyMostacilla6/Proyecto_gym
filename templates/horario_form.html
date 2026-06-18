@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}{% if horario %}Editar{% else %}Nuevo{% endif %} Horario - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header {% if horario %}bg-warning{% else %}bg-success{% endif %} text-white">
+                    <h3 class="mb-0 text-center">
+                        {% if horario %}
+                            <i class="fas fa-edit"></i> Editar Horario
+                        {% else %}
+                            <i class="fas fa-plus-circle"></i> Nuevo Horario
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if horario %}
+                    <form method="POST" action="{{ url_for('horario.editar', id=horario[0]) }}">
+                    {% else %}
+                    <form method="POST" action="{{ url_for('horario.nuevo') }}">
+                    {% endif %}
+
+                        <div class="mb-3">
+                            <label for="clase_id" class="form-label">Clase *</label>
+                            <select class="form-select" id="clase_id" name="clase_id" required>
+                                <option value="">Seleccione una clase...</option>
+                                {% for c in clases %}
+                                <option value="{{ c[0] }}" {% if horario and horario[1] == c[0] %}selected{% endif %}>
+                                    {{ c[1] }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="entrenador_id" class="form-label">Entrenador *</label>
+                            <select class="form-select" id="entrenador_id" name="entrenador_id" required>
+                                <option value="">Seleccione un entrenador...</option>
+                                {% for e in entrenadores %}
+                                <option value="{{ e[0] }}" {% if horario and horario[2] == e[0] %}selected{% endif %}>
+                                    {{ e[1] }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dia_semana" class="form-label">Día de la Semana *</label>
+                            <select class="form-select" id="dia_semana" name="dia_semana" required>
+                                <option value="">Seleccione un día...</option>
+                                <option value="Lunes" {% if horario and horario[3] == 'Lunes' %}selected{% endif %}>Lunes</option>
+                                <option value="Martes" {% if horario and horario[3] == 'Martes' %}selected{% endif %}>Martes</option>
+                                <option value="Miércoles" {% if horario and horario[3] == 'Miércoles' %}selected{% endif %}>Miércoles</option>
+                                <option value="Jueves" {% if horario and horario[3] == 'Jueves' %}selected{% endif %}>Jueves</option>
+                                <option value="Viernes" {% if horario and horario[3] == 'Viernes' %}selected{% endif %}>Viernes</option>
+                                <option value="Sábado" {% if horario and horario[3] == 'Sábado' %}selected{% endif %}>Sábado</option>
+                                <option value="Domingo" {% if horario and horario[3] == 'Domingo' %}selected{% endif %}>Domingo</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="hora_inicio" class="form-label">Hora Inicio *</label>
+                                <input type="time" class="form-control" id="hora_inicio" name="hora_inicio"
+                                       value="{{ horario[4] if horario else '' }}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="hora_fin" class="form-label">Hora Fin *</label>
+                                <input type="time" class="form-control" id="hora_fin" name="hora_fin"
+                                       value="{{ horario[5] if horario else '' }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="sala" class="form-label">Sala</label>
+                            <input type="text" class="form-control" id="sala" name="sala"
+                                   value="{{ horario[6] if horario else '' }}" placeholder="Ej: Sala A, Piso 1">
+                        </div>
+
+                        {% if horario %}
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="activo" name="activo"
+                                   {% if horario[7] %}checked{% endif %}>
+                            <label class="form-check-label" for="activo">Horario Activo</label>
+                        </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('horario.listar') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                {% if horario %}Actualizar{% else %}Guardar{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}{% if miembro %}Editar{% else %}Nuevo{% endif %} Miembro - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header {% if miembro %}bg-warning{% else %}bg-success{% endif %} text-white">
+                    <h4 class="mb-0">
+                        {% if miembro %}
+                            <i class="fas fa-edit"></i> Editar Miembro
+                        {% else %}
+                            <i class="fas fa-user-plus"></i> Nuevo Miembro
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if miembro %}
+                    <form method="POST" action="{{ url_for('miembro.editar', id=miembro[0]) }}">
+                    {% else %}
+                    <form method="POST" action="{{ url_for('miembro.nuevo') }}">
+                    {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre" class="form-label">
+                                    <i class="fas fa-user text-primary"></i> Nombre *
+                                </label>
+                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                       value="{{ miembro[1] if miembro else '' }}"
+                                       placeholder="Ingrese el nombre" required autofocus>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="apellido" class="form-label">
+                                    <i class="fas fa-user text-primary"></i> Apellido *
+                                </label>
+                                <input type="text" class="form-control" id="apellido" name="apellido"
+                                       value="{{ miembro[2] if miembro else '' }}"
+                                       placeholder="Ingrese el apellido" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope text-info"></i> Email *
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       value="{{ miembro[3] if miembro else '' }}"
+                                       placeholder="correo@ejemplo.com" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="telefono" class="form-label">
+                                    <i class="fas fa-phone text-success"></i> Teléfono
+                                </label>
+                                <input type="text" class="form-control" id="telefono" name="telefono"
+                                       value="{{ miembro[4] if miembro else '' }}"
+                                       placeholder="(123) 456-7890">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="direccion" class="form-label">
+                                <i class="fas fa-map-marker-alt text-danger"></i> Dirección
+                            </label>
+                            <textarea class="form-control" id="direccion" name="direccion" rows="2"
+                                      placeholder="Calle, número, colonia, ciudad">{{ miembro[5] if miembro else '' }}</textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha_nacimiento" class="form-label">
+                                    <i class="fas fa-birthday-cake text-warning"></i> Fecha de Nacimiento
+                                </label>
+                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento"
+                                       value="{{ miembro[6] if miembro and miembro[6] else '' }}">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="estado" class="form-label">
+                                    <i class="fas fa-toggle-on text-secondary"></i> Estado
+                                </label>
+                                <select class="form-select" id="estado" name="estado">
+                                    <option value="activo" {% if miembro and miembro[8] == 'activo' %}selected{% endif %}>Activo</option>
+                                    <option value="inactivo" {% if miembro and miembro[8] == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                                    <option value="suspendido" {% if miembro and miembro[8] == 'suspendido' %}selected{% endif %}>Suspendido</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {% if not miembro %}
+                        <div class="alert alert-info mt-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="crear_usuario" name="crear_usuario">
+                                <label class="form-check-label" for="crear_usuario">
+                                    <i class="fas fa-user-plus"></i> Crear usuario automáticamente (contraseña temporal: temp123)
+                                </label>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                            <a href="{{ url_for('miembro.listar') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                {% if miembro %}Actualizar{% else %}Guardar{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

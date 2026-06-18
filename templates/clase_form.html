@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{% if clase %}Editar{% else %}Nueva{% endif %} Clase - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header {% if clase %}bg-warning{% else %}bg-success{% endif %} text-white">
+                    <h3 class="mb-0 text-center">
+                        {% if clase %}
+                            <i class="fas fa-edit"></i> ACTUALIZAR CLASE
+                        {% else %}
+                            <i class="fas fa-plus-circle"></i> NUEVA CLASE
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if clase %}
+                    <form method="POST" action="{{ url_for('clase.editar', id=clase[0]) }}">
+                    {% else %}
+                    <form method="POST" action="{{ url_for('clase.nuevo') }}">
+                    {% endif %}
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre de la Clase *</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre"
+                                   value="{{ clase[1] if clase else '' }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ clase[2] if clase else '' }}</textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cupo_maximo" class="form-label">Cupo Máximo *</label>
+                                <input type="number" class="form-control" id="cupo_maximo" name="cupo_maximo"
+                                       value="{{ clase[3] if clase else 20 }}" min="1" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="duracion_minutos" class="form-label">Duración (min) *</label>
+                                <input type="number" class="form-control" id="duracion_minutos" name="duracion_minutos"
+                                       value="{{ clase[4] if clase else 60 }}" min="15" required>
+                            </div>
+                        </div>
+
+                        {% if clase %}
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="activo" name="activo"
+                                   {% if clase[5] %}checked{% endif %}>
+                            <label class="form-check-label" for="activo">Clase Activa</label>
+                        </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('clase.listar') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                {% if clase %}Actualizar{% else %}Guardar{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

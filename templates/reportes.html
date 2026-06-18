@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="fas fa-chart-bar text-primary"></i>
+        Panel de Reportes
+    </h2>
+
+    <!-- Tarjetas de resumen -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5><i class="fas fa-users"></i> Miembros</h5>
+                    <h2>{{ total_miembros }}</h2>
+                    <small>Activos en el sistema</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5><i class="fas fa-dollar-sign"></i> Ingresos del Mes</h5>
+                    <h2>${{ "%.2f"|format(ingresos_mes) }}</h2>
+                    <small>En facturación</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5><i class="fas fa-trophy"></i> Clase Popular</h5>
+                    <h5>{{ clase_popular }}</h5>
+                    <small>Más reservada</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5><i class="fas fa-calendar-check"></i> Reservas Hoy</h5>
+                    <h2>{{ reservas_hoy }}</h2>
+                    <small>Clases programadas</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Reporte Mensual -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Reporte Mensual</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('reporte.reporte_mensual') }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="anio" class="form-label">Año</label>
+                                <select name="anio" id="anio" class="form-select">
+                                    <option value="2023">2023</option>
+                                    <option value="2024" selected>2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="mes" class="form-label">Mes</label>
+                                <select name="mes" id="mes" class="form-select">
+                                    <option value="1">Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3">Marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                    <option value="7">Julio</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12" selected>Diciembre</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-chart-line"></i> Generar Reporte Mensual
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exportar PDF -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="fas fa-file-pdf"></i> Exportar Reportes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <a href="{{ url_for('reporte.generar_pdf') }}" class="btn btn-danger btn-lg" target="_blank">
+                            <i class="fas fa-file-pdf fa-2x float-start me-2"></i>
+                            <strong>Reporte General PDF</strong><br>
+                            <small>Miembros + Pagos recientes</small>
+                        </a>
+                        <a href="{{ url_for('reporte.ingresos_pdf') }}" class="btn btn-warning btn-lg" target="_blank">
+                            <i class="fas fa-chart-line fa-2x float-start me-2"></i>
+                            <strong>Ingresos Mensuales PDF</strong><br>
+                            <small>Historial de ingresos</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Membresías por vencer -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Membresías por Vencer (próximos 7 días)</h5>
+                </div>
+                <div class="card-body">
+                    {% if por_vencer > 0 %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-bell"></i> Hay <strong>{{ por_vencer }}</strong> membresías que vencerán en los próximos 7 días.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> No hay membresías por vencer en los próximos 7 días.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

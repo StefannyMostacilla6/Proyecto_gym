@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Miembros - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-users text-primary"></i>
+            Gestión de Miembros
+        </h2>
+        <a href="{{ url_for('miembro.nuevo') }}" class="btn btn-success">
+            <i class="fas fa-user-plus"></i> Nuevo Miembro
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <i class="fas fa-table"></i> Listado de Miembros
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr class="text-center">
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Fecha Registro</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for miembro in miembros %}
+                        <tr class="text-center">
+                            <td>{{ miembro[0] }}</td>
+                            <td class="text-start">{{ miembro[1] }}</td>
+                            <td class="text-start">{{ miembro[2] }}</td>
+                            <td>{{ miembro[3] }}</td>
+                            <td>{{ miembro[4] if miembro[4] else '-' }}</td>
+                            <td>{{ miembro[5] if miembro[5] else '-' }}</td>
+                            <td>
+                                {% if miembro[6] == 'activo' %}
+                                    <span class="badge bg-success">Activo</span>
+                                {% elif miembro[6] == 'inactivo' %}
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                {% else %}
+                                    <span class="badge bg-warning">{{ miembro[6] }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('miembro.editar', id=miembro[0]) }}" class="btn btn-warning btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{{ url_for('miembro.eliminar', id=miembro[0]) }}" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Eliminar este miembro?')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <a href="{{ url_for('miembro.renovar_membresia', miembro_id=miembro[0]) }}" class="btn btn-info btn-sm" title="Renovar Membresía">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                <i class="fas fa-users-slash fa-2x mb-2 d-block"></i>
+                                No hay miembros registrados
+                                <br>
+                                <a href="{{ url_for('miembro.nuevo') }}" class="btn btn-sm btn-primary mt-2">
+                                    <i class="fas fa-plus"></i> Registrar primer miembro
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <i class="fas fa-info-circle"></i> Total de miembros: {{ miembros|length }}
+        </div>
+    </div>
+</div>
+{% endblock %}

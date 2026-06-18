@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Reserva - GymSystem{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-calendar-plus"></i> Nueva Reserva
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('reserva.nuevo') }}">
+                        <div class="mb-3">
+                            <label for="miembro_id" class="form-label">
+                                <i class="fas fa-user"></i> Miembro *
+                            </label>
+                            <select class="form-select" id="miembro_id" name="miembro_id" required>
+                                <option value="">Seleccione un miembro...</option>
+                                {% for m in miembros %}
+                                <option value="{{ m[0] }}">{{ m[1] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="horario_id" class="form-label">
+                                <i class="fas fa-chalkboard-user"></i> Clase y Horario *
+                            </label>
+                            <select class="form-select" id="horario_id" name="horario_id" required>
+                                <option value="">Seleccione una clase...</option>
+                                {% for h in horarios %}
+                                <option value="{{ h[0] }}">
+                                    {{ h[1] }} - {{ h[3] }} {{ h[4] }} - {{ h[2] }} - Sala: {{ h[6] if h[6] else 'N/A' }} (Cupo: {{ h[7] }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fecha_clase" class="form-label">
+                                <i class="fas fa-calendar-day"></i> Fecha de la Clase *
+                            </label>
+                            <input type="date" class="form-control" id="fecha_clase" name="fecha_clase"
+                                   min="{{ hoy }}" required>
+                            <small class="text-muted">Seleccione la fecha para la que desea reservar</small>
+                        </div>
+
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Información:</strong> Si la clase está llena, la reserva se agregará automáticamente a lista de espera.
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <i class="fas fa-clock"></i>
+                            <strong>Política de cancelación:</strong> Se requiere al menos 24 horas de anticipación para cancelar sin penalización.
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ url_for('reserva.listar') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar Reserva
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Setear fecha mínima como hoy
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        const fechaInput = document.getElementById('fecha_clase');
+        if (fechaInput) {
+            fechaInput.min = today;
+        }
+    });
+</script>
+{% endblock %}
